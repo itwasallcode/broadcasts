@@ -1,0 +1,12 @@
+export function DragHandle() {
+  return (
+    <svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="4" cy="3" r="1.2" fill="currentColor" />
+      <circle cx="8" cy="3" r="1.2" fill="currentColor" />
+      <circle cx="4" cy="8" r="1.2" fill="currentColor" />
+      <circle cx="8" cy="8" r="1.2" fill="currentColor" />
+      <circle cx="4" cy="13" r="1.2" fill="currentColor" />
+      <circle cx="8" cy="13" r="1.2" fill="currentColor" />
+    </svg>
+  );
+}

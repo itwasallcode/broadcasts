@@ -1,0 +1,52 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+  role="img"
+  aria-labelledby="title description"
+>
+  <title id="title">Broadcasts</title>
+  <desc id="description">Watch multiple broadcasts on one screen.</desc>
+  <rect width="1200" height="630" fill="#000" />
+  <rect x="76" y="183" width="44" height="5" rx="2.5" fill="#e33" />
+  <text
+    x="72"
+    y="280"
+    fill="#f5f5f5"
+    font-family="Inter, Arial, sans-serif"
+    font-size="82"
+    font-weight="700"
+    letter-spacing="-3.5"
+  >
+    Broadcasts
+  </text>
+  <text
+    x="76"
+    y="348"
+    fill="#a9a9b0"
+    font-family="Inter, Arial, sans-serif"
+    font-size="30"
+    font-weight="400"
+    letter-spacing="-0.3"
+  >
+    <tspan x="76">Watch multiple broadcasts</tspan>
+    <tspan x="76" dy="44">on one screen.</tspan>
+  </text>
+  <g aria-hidden="true">
+    <rect
+      x="768"
+      y="135"
+      width="360"
+      height="360"
+      rx="32"
+      fill="#101012"
+      stroke="#252527"
+      stroke-width="2"
+    />
+    <rect x="792" y="159" width="148" height="148" rx="16" fill="#e6e6e6" />
+    <rect x="956" y="159" width="148" height="148" rx="16" fill="#595959" />
+    <rect x="792" y="323" width="148" height="148" rx="16" fill="#595959" />
+    <rect x="956" y="323" width="148" height="148" rx="16" fill="#e33" />
+  </g>
+</svg>

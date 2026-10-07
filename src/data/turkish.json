@@ -1,0 +1,50 @@
+{
+  "name": "Turkish Channels",
+  "sources": [
+    {
+      "id": "a-haber",
+      "label": "A Haber",
+      "playback": { "provider": "youtube", "kind": "video", "videoId": "o2i1o4cFRzA" }
+    },
+    {
+      "id": "cnn-turk",
+      "label": "CNN Türk",
+      "playback": { "provider": "youtube", "kind": "video", "videoId": "6N8_r2uwLEc" }
+    },
+    {
+      "id": "flash-haber",
+      "label": "Flash Haber",
+      "playback": { "provider": "youtube", "kind": "video", "videoId": "U0JjOs-ayaM" }
+    },
+    {
+      "id": "haber-global",
+      "label": "Haber Global",
+      "playback": { "provider": "youtube", "kind": "video", "videoId": "EqoCJ8BPxtE" }
+    },
+    {
+      "id": "halk-tv",
+      "label": "Halk TV",
+      "playback": { "provider": "youtube", "kind": "video", "videoId": "jHMsvYrf-UA" }
+    },
+    {
+      "id": "sozcu-tv",
+      "label": "Sözcü TV",
+      "playback": { "provider": "youtube", "kind": "video", "videoId": "ztmY_cCtUl0" }
+    },
+    {
+      "id": "tgrt-haber",
+      "label": "TGRT Haber",
+      "playback": { "provider": "youtube", "kind": "video", "videoId": "WX29nlgdqho" }
+    },
+    {
+      "id": "trt-haber",
+      "label": "TRT Haber",
+      "playback": { "provider": "youtube", "kind": "video", "videoId": "GefoJ-LXYfc" }
+    },
+    {
+      "id": "tv100",
+      "label": "TV100",
+      "playback": { "provider": "youtube", "kind": "video", "videoId": "4WSvLRk83-c" }
+    }
+  ]
+}
