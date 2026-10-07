@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { MOBILE_VIEWPORT } from '@/constants/media';
+
 import catalogData from '@/data/turkish.json';
 
 import {
@@ -18,11 +20,12 @@ const WORKSPACE_KEY = 'broadcasts:workspace';
 const catalog = catalogData.sources;
 
 function loadInitialWorkspace() {
+  const defaultLayout = window.matchMedia(MOBILE_VIEWPORT).matches ? '3x0' : '3x3';
   try {
     const parsed = JSON.parse(window.localStorage.getItem(WORKSPACE_KEY));
-    return sanitizeWorkspace(parsed, catalog);
+    return sanitizeWorkspace(parsed, catalog, defaultLayout);
   } catch {
-    return createDefaultWorkspace();
+    return createDefaultWorkspace(defaultLayout);
   }
 }
 
