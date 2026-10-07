@@ -98,7 +98,8 @@
   pointer-events: none;
 }
 
-.stream-cell:hover .stream-label {
+.stream-cell:hover .stream-label,
+.stream-cell:focus-within .stream-label {
   opacity: 1;
 }
 
@@ -110,7 +111,11 @@
   pointer-events: none;
 }
 
-.stream-reload-btn {
+.stream-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   pointer-events: auto;
   background: rgba(255, 255, 255, 0.1);
   border: none;
@@ -124,9 +129,19 @@
   transition: all 0.1s;
 }
 
-.stream-reload-btn:hover {
+.stream-action-btn:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.25);
   color: #fff;
+}
+
+.stream-action-btn:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.stream-action-btn:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 2px;
 }
 
 /* ─── Stream Loading ──────────────────────────────────── */

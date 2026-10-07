@@ -1,5 +1,9 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 
+import { HomeIcon } from '@/components/ui/HomeIcon';
+
+import { useChannelUrl } from '@/hooks/useChannelUrl';
+
 import { buildEmbedUrl } from '@/utils/playback';
 
 const LOAD_TIMEOUT_MS = 15000;
@@ -8,6 +12,7 @@ export const StreamCell = memo(function StreamCell({ stream, index, refreshKey =
   const [reloadKey, setReloadKey] = useState(0);
   const [status, setStatus] = useState('loading');
   const streamId = stream?.id;
+  const channelUrl = useChannelUrl(stream);
 
   const handleLoad = useCallback(() => {
     setStatus('loaded');
@@ -73,8 +78,29 @@ export const StreamCell = memo(function StreamCell({ stream, index, refreshKey =
       />
       <div className="stream-label">
         <span className="stream-label-text">{stream.label}</span>
+        {channelUrl ? (
+          <a
+            className="stream-action-btn"
+            href={channelUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Open channel home page (opens in a new tab)"
+            aria-label={`Open ${stream.label || 'channel'} home page (opens in a new tab)`}
+          >
+            <HomeIcon />
+          </a>
+        ) : (
+          <button
+            className="stream-action-btn"
+            disabled
+            title="Channel home page unavailable"
+            aria-label="Channel home page unavailable"
+          >
+            <HomeIcon />
+          </button>
+        )}
         <button
-          className="stream-reload-btn"
+          className="stream-action-btn"
           onClick={handleReload}
           title="Reload stream"
           aria-label="Reload stream"
