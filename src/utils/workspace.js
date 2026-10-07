@@ -11,10 +11,10 @@ function createDefaultPlaylist() {
   return { id: DEFAULT_PLAYLIST_ID, order: [], hidden: [] };
 }
 
-export function createDefaultWorkspace() {
+export function createDefaultWorkspace(defaultLayout = '3x3') {
   return {
     version: WORKSPACE_VERSION,
-    layout: '3x3',
+    layout: defaultLayout,
     activePlaylistId: DEFAULT_PLAYLIST_ID,
     customSources: [],
     playlists: [createDefaultPlaylist()],
@@ -81,9 +81,9 @@ function sanitizePlaylists(value, catalogIds, knownIds) {
   return playlists;
 }
 
-export function sanitizeWorkspace(parsed, catalog) {
+export function sanitizeWorkspace(parsed, catalog, defaultLayout = '3x3') {
   if (!parsed || typeof parsed !== 'object' || parsed.version !== WORKSPACE_VERSION) {
-    return createDefaultWorkspace();
+    return createDefaultWorkspace(defaultLayout);
   }
   const customSources = sanitizeCustomSources(parsed.customSources);
   const catalogIds = new Set(catalog.map((source) => source.id));
@@ -94,7 +94,7 @@ export function sanitizeWorkspace(parsed, catalog) {
     : DEFAULT_PLAYLIST_ID;
   return {
     version: WORKSPACE_VERSION,
-    layout: Object.hasOwn(LAYOUTS, parsed.layout) ? parsed.layout : '3x3',
+    layout: Object.hasOwn(LAYOUTS, parsed.layout) ? parsed.layout : defaultLayout,
     activePlaylistId,
     customSources,
     playlists,
