@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
+import { sanitizeChannelUrl } from '../src/utils/channelUrl.js';
 import { YOUTUBE_ID_PATTERN } from '../src/utils/extractYouTubeId.js';
 
 const SOURCE_ID_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -57,6 +58,9 @@ for (const file of files) {
       errors.push(`${file}[${i}]: missing label`);
     }
     const playback = item.playback;
+    if (!sanitizeChannelUrl(item.channelUrl)) {
+      errors.push(`${file}[${i}]: invalid or missing channelUrl`);
+    }
     if (!playback || typeof playback !== 'object') {
       errors.push(`${file}[${i}]: missing playback`);
       return;
