@@ -1,6 +1,9 @@
 # folders
-node_modules
 dist
+node_modules
+test-results
+playwright-report
 
 # files
 .DS_Store
+.playwright

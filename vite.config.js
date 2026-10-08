@@ -9,7 +9,8 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
+      injectRegister: false,
       includeAssets: ['apple-touch-icon-180x180.png'],
       manifest: {
         name: 'Broadcasts',
@@ -44,6 +45,8 @@ export default defineConfig({
         ],
       },
       workbox: {
+        // Claim open pages so manual activation can trigger controllerchange and reload.
+        clientsClaim: true,
         cleanupOutdatedCaches: true,
         globPatterns: ['**/*.{js,css,html,ico,svg,woff2}'],
       },

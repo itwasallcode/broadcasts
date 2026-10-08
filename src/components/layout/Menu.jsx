@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 import { AddStreamForm } from '@/components/layout/AddStreamForm';
+import { AppUpdate } from '@/components/layout/AppUpdate';
 import { LayoutButtons } from '@/components/layout/LayoutButtons';
 import { StreamList } from '@/components/streams/StreamList';
 
@@ -114,6 +115,8 @@ export function Menu({
 
           <AddStreamForm streams={streams} onAddStream={onAddStream} />
         </section>
+
+        <AppUpdate />
       </div>
 
       {isOpen && <div className="menu-backdrop" onClick={onClose} />}
