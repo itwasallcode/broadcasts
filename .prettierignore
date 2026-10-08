@@ -1,6 +1,9 @@
 # folders
 node_modules
 dist
+.playwright
+test-results
+playwright-report
 
 # files
 package-lock.json

@@ -300,6 +300,101 @@
   background: transparent;
 }
 
+/* ─── App Updates ─────────────────────────────────────── */
+.app-update {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.app-update-btn {
+  --update-color: rgba(255, 255, 255, 0.8);
+  --update-border: rgba(255, 255, 255, 0.15);
+  --update-background: rgba(255, 255, 255, 0.04);
+  --update-hover: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--update-border);
+  border-radius: 6px;
+  background: var(--update-background);
+  color: var(--update-color);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.app-update-btn:hover:not(:disabled) {
+  background: var(--update-hover);
+}
+
+.app-update-btn[data-status='checking'],
+.app-update-btn[data-status='updating'],
+.app-update-btn[data-status='available'] {
+  --update-color: #93c5fd;
+  --update-border: rgba(96, 165, 250, 0.35);
+  --update-background: rgba(96, 165, 250, 0.1);
+  --update-hover: rgba(96, 165, 250, 0.18);
+}
+
+.app-update-btn[data-status='current'] {
+  --update-color: #86efac;
+  --update-border: rgba(74, 222, 128, 0.35);
+  --update-background: rgba(74, 222, 128, 0.1);
+  --update-hover: rgba(74, 222, 128, 0.18);
+}
+
+.app-update-btn[data-status='error'],
+.app-update-btn[data-status='update-error'] {
+  --update-color: #ff6b6b;
+  --update-border: rgba(220, 50, 50, 0.4);
+  --update-background: rgba(220, 50, 50, 0.15);
+  --update-hover: rgba(220, 50, 50, 0.25);
+}
+
+.app-update-btn:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 3px;
+}
+
+.app-update-btn:disabled {
+  cursor: default;
+}
+
+.app-update-btn:disabled:not([aria-busy='true']) {
+  opacity: 0.5;
+}
+
+.app-update-icon {
+  display: flex;
+  flex: 0 0 15px;
+  width: 15px;
+  height: 15px;
+}
+
+.app-update-icon.is-spinning {
+  animation: spin 1s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-update-btn {
+    transition: none;
+  }
+
+  .app-update-icon.is-spinning {
+    animation: none;
+  }
+}
+
 /* ─── Layout Options ──────────────────────────────────── */
 .layout-options {
   display: grid;
