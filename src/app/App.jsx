@@ -8,11 +8,18 @@ import { useWorkspace } from '@/hooks/useWorkspace';
 
 export default function App() {
   const {
+    playlists,
+    activePlaylistId,
+    onPlaylistChange,
+    onCreatePlaylist,
+    onRenamePlaylist,
+    onDeletePlaylist,
     layout,
     onLayoutChange,
     streams,
     onReorderStreams,
     onAddStream,
+    onAddSources,
     onRemoveStream,
     onResetStreams,
   } = useWorkspace();
@@ -42,11 +49,18 @@ export default function App() {
         menuButtonRef={menuButtonRef}
       />
       <Menu
+        playlists={playlists}
+        activePlaylistId={activePlaylistId}
+        onPlaylistChange={onPlaylistChange}
+        onCreatePlaylist={onCreatePlaylist}
+        onRenamePlaylist={onRenamePlaylist}
+        onDeletePlaylist={onDeletePlaylist}
         layout={layout}
         onLayoutChange={onLayoutChange}
         streams={streams}
         onReorderStreams={onReorderStreams}
         onAddStream={onAddStream}
+        onAddSources={onAddSources}
         onRemoveStream={onRemoveStream}
         onResetStreams={onResetStreams}
         isOpen={isMenuOpen}

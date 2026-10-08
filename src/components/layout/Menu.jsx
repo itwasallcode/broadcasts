@@ -1,18 +1,25 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import { AddStreamForm } from '@/components/layout/AddStreamForm';
 import { AppUpdate } from '@/components/layout/AppUpdate';
 import { LayoutButtons } from '@/components/layout/LayoutButtons';
+import { PlaylistPicker } from '@/components/layout/PlaylistPicker';
 import { StreamList } from '@/components/streams/StreamList';
 
 import { MOBILE_RECOMMENDED_LAYOUTS, STANDARD_LAYOUTS } from '@/constants/layouts';
 
 export function Menu({
+  playlists,
+  activePlaylistId,
+  onPlaylistChange,
+  onCreatePlaylist,
+  onRenamePlaylist,
+  onDeletePlaylist,
   layout,
   onLayoutChange,
   streams,
   onReorderStreams,
   onAddStream,
+  onAddSources,
   onRemoveStream,
   onResetStreams,
   isOpen,
@@ -26,7 +33,8 @@ export function Menu({
 
     const panel = panelRef.current;
     const returnFocusTarget = returnFocusRef.current;
-    const getControls = () => panel.querySelectorAll('button:not(:disabled), input:not(:disabled)');
+    const getControls = () =>
+      panel.querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled)');
     (getControls()[0] ?? panel).focus();
 
     function handleKeyDown(event) {
@@ -69,7 +77,7 @@ export function Menu({
   );
 
   const handleReset = useCallback(() => {
-    if (window.confirm('Reset streams to the original list?')) {
+    if (window.confirm('Reset streams in this playlist to defaults?')) {
       onResetStreams();
     }
   }, [onResetStreams]);
@@ -100,20 +108,25 @@ export function Menu({
         </section>
 
         <section className="menu-section">
-          <div className="streams-header">
-            <p className="menu-label">STREAMS</p>
-            <button className="reset-btn" onClick={handleReset} title="Reset to defaults">
-              Reset
-            </button>
-          </div>
+          <p className="menu-label">STREAMS</p>
+          <PlaylistPicker
+            playlists={playlists}
+            activePlaylistId={activePlaylistId}
+            onSelect={onPlaylistChange}
+            onCreate={onCreatePlaylist}
+            onRename={onRenamePlaylist}
+            onDelete={onDeletePlaylist}
+            onReset={handleReset}
+            streams={streams}
+            onAddStream={onAddStream}
+            onAddSources={onAddSources}
+          />
 
           <StreamList
             streams={streams}
             onReorderStreams={onReorderStreams}
             onRemoveStream={onRemoveStream}
           />
-
-          <AddStreamForm streams={streams} onAddStream={onAddStream} />
         </section>
 
         <AppUpdate />

@@ -8,7 +8,7 @@ export const ROOT = fileURLToPath(new URL('../', import.meta.url));
 export const BUILDS = join(ROOT, '.playwright/builds');
 
 export default async function setup() {
-  const catalogPath = join(ROOT, 'src/data/turkish.json');
+  const catalogPath = join(ROOT, 'src/data/turkish-streams.json');
   const catalog = JSON.parse(await readFile(catalogPath, 'utf8'));
   for (const base of ['/', '/broadcasts/']) {
     for (const version of ['a', 'b']) {

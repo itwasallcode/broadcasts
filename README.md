@@ -12,7 +12,11 @@ Watch multiple broadcasts on one screen.
 - Watch multiple broadcasts side by side with several grid layouts.
 - Add any YouTube broadcast you want.
 - Reorder broadcasts by dragging.
-- Keep layout and list saved in the browser.
+- Keep layout and playlists saved in the browser.
+- Create personal playlists from scratch or copy the current streams.
+- Browse other playlists and add selected streams to your own.
+- Switch between `Turkish Streams` and personal playlists, with separate stream orders.
+- Rename or delete personal playlists without changing other playlists.
 - Use fullscreen on devices with a mouse.
 
 ## Install
