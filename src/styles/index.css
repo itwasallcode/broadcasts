@@ -207,7 +207,7 @@
 /* ─── Sidebar ─────────────────────────────────────────── */
 .side-buttons {
   position: fixed;
-  left: 6px;
+  right: 6px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 200;
@@ -258,19 +258,19 @@
 /* ─── Menu Panel ──────────────────────────────────────── */
 .menu-panel {
   position: fixed;
-  left: 0;
+  right: 0;
   top: 0;
   bottom: 0;
   width: 240px;
   z-index: 180;
   background: rgba(12, 12, 12, 0.96);
   backdrop-filter: blur(16px);
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
   padding: 24px 20px;
   display: flex;
   flex-direction: column;
   gap: 28px;
-  transform: translateX(-100%);
+  transform: translateX(100%);
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   overflow-y: auto;
   font-family: var(--font);
@@ -675,44 +675,6 @@
 .layout-btn.active {
   background: rgba(220, 50, 50, 0.2);
   border-color: rgba(220, 50, 50, 0.6);
-  color: #ff6b6b;
-}
-
-.layout-subgroup {
-  margin-top: 2px;
-  padding: 10px 10px 10px 12px;
-  border-left: 2px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.025);
-  border-radius: 0 8px 8px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.layout-subgroup-label {
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.4);
-}
-
-.layout-subgroup .layout-btn {
-  padding: 6px 4px;
-  font-size: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.layout-subgroup .layout-btn:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.18);
-  color: #fff;
-}
-
-.layout-subgroup .layout-btn.active {
-  background: rgba(220, 50, 50, 0.18);
-  border-color: rgba(220, 50, 50, 0.5);
   color: #ff6b6b;
 }
 

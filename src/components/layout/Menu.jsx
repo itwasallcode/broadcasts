@@ -5,7 +5,7 @@ import { LayoutButtons } from '@/components/layout/LayoutButtons';
 import { PlaylistPicker } from '@/components/layout/PlaylistPicker';
 import { StreamList } from '@/components/streams/StreamList';
 
-import { MOBILE_RECOMMENDED_LAYOUTS, STANDARD_LAYOUTS } from '@/constants/layouts';
+import { LAYOUT_OPTIONS } from '@/constants/layouts';
 
 export function Menu({
   playlists,
@@ -96,15 +96,7 @@ export function Menu({
       >
         <section className="menu-section">
           <p className="menu-label">GRID</p>
-          <LayoutButtons options={STANDARD_LAYOUTS} layout={layout} onSelect={handleLayoutSelect} />
-          <div className="layout-subgroup">
-            <p className="layout-subgroup-label">RECOMMENDED FOR MOBILE</p>
-            <LayoutButtons
-              options={MOBILE_RECOMMENDED_LAYOUTS}
-              layout={layout}
-              onSelect={handleLayoutSelect}
-            />
-          </div>
+          <LayoutButtons options={LAYOUT_OPTIONS} layout={layout} onSelect={handleLayoutSelect} />
         </section>
 
         <section className="menu-section">
