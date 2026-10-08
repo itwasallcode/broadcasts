@@ -5,7 +5,7 @@ import { test } from 'node:test';
 import { createServer } from 'vite';
 
 const catalog = JSON.parse(
-  await readFile(new URL('../src/data/turkish.json', import.meta.url))
+  await readFile(new URL('../src/data/turkish-streams.json', import.meta.url))
 ).sources;
 const server = await createServer({
   server: { middlewareMode: true, ws: false },

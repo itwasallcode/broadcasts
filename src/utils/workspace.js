@@ -5,6 +5,7 @@ import { sanitizePlayback } from '@/utils/playback';
 export const WORKSPACE_VERSION = 1;
 export const DEFAULT_PLAYLIST_ID = 'default';
 export const CUSTOM_ID_PREFIX = 'custom-';
+export const PLAYLIST_NAME_LIMIT = 60;
 
 // Read the default playlist name from the catalog to avoid storing a stale copy.
 function createDefaultPlaylist() {
@@ -152,8 +153,88 @@ export function setWorkspaceLayout(workspace, layout) {
   return Object.hasOwn(LAYOUTS, layout) ? { ...workspace, layout } : workspace;
 }
 
+export function getPlaylistNameError(name, playlists, exceptId) {
+  if (typeof name !== 'string' || !name.trim()) return 'Enter a playlist name.';
+  const trimmed = name.trim();
+  if (trimmed.length > PLAYLIST_NAME_LIMIT)
+    return `Use ${PLAYLIST_NAME_LIMIT} characters or fewer.`;
+  if (
+    playlists.some(
+      (playlist) =>
+        playlist.id !== exceptId && playlist.name?.trim().toLowerCase() === trimmed.toLowerCase()
+    )
+  ) {
+    return 'A playlist with this name already exists.';
+  }
+  return '';
+}
+
+export function setActivePlaylist(workspace, playlistId) {
+  if (!workspace.playlists.some((playlist) => playlist.id === playlistId)) return workspace;
+  return { ...workspace, activePlaylistId: playlistId };
+}
+
+export function createPlaylist(workspace, catalog, { id, name, copyCurrent = false }) {
+  if (typeof id !== 'string' || !id || workspace.playlists.some((playlist) => playlist.id === id))
+    return workspace;
+  if (getPlaylistNameError(name, workspace.playlists)) return workspace;
+  const order = copyCurrent
+    ? resolveActiveSources(workspace, catalog).map((source) => source.id)
+    : [];
+  return {
+    ...workspace,
+    activePlaylistId: id,
+    playlists: [...workspace.playlists, { id, name: name.trim(), order }],
+  };
+}
+
+export function renamePlaylist(workspace, playlistId, name) {
+  if (
+    playlistId === DEFAULT_PLAYLIST_ID ||
+    getPlaylistNameError(name, workspace.playlists, playlistId)
+  )
+    return workspace;
+  return updatePlaylist(workspace, playlistId, { name: name.trim() });
+}
+
+export function deletePlaylist(workspace, playlistId) {
+  if (
+    playlistId === DEFAULT_PLAYLIST_ID ||
+    !workspace.playlists.some((playlist) => playlist.id === playlistId)
+  )
+    return workspace;
+  return dropUnreferencedCustomSources({
+    ...workspace,
+    activePlaylistId:
+      workspace.activePlaylistId === playlistId ? DEFAULT_PLAYLIST_ID : workspace.activePlaylistId,
+    playlists: workspace.playlists.filter((playlist) => playlist.id !== playlistId),
+  });
+}
+
 export function reorderActivePlaylist(workspace, orderedIds) {
   return updatePlaylist(workspace, getActivePlaylist(workspace).id, { order: orderedIds });
+}
+
+export function addSourcesToActivePlaylist(workspace, catalog, sourceIds) {
+  const available = new Map(
+    [...catalog, ...workspace.customSources].map((source) => [source.id, source])
+  );
+  const current = resolveActiveSources(workspace, catalog);
+  const videoIds = new Set(current.map((source) => source.playback.videoId));
+  const additions = [];
+  for (const id of sourceIds) {
+    const source = available.get(id);
+    if (!source || videoIds.has(source.playback.videoId)) continue;
+    videoIds.add(source.playback.videoId);
+    additions.push(id);
+  }
+  if (!additions.length) return workspace;
+  const playlist = getActivePlaylist(workspace);
+  const update = { order: [...current.map((source) => source.id), ...additions] };
+  if (playlist.id === DEFAULT_PLAYLIST_ID) {
+    update.hidden = playlist.hidden.filter((id) => !additions.includes(id));
+  }
+  return updatePlaylist(workspace, playlist.id, update);
 }
 
 export function addCustomSource(workspace, catalog, { videoId, label }) {

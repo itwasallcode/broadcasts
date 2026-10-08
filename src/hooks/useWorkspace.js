@@ -2,21 +2,26 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { MOBILE_VIEWPORT } from '@/constants/media';
 
-import catalogData from '@/data/turkish.json';
+import catalogData from '@/data/turkish-streams.json';
 
 import {
+  DEFAULT_PLAYLIST_ID,
   addCustomSource,
+  addSourcesToActivePlaylist,
   createDefaultWorkspace,
+  createPlaylist,
+  deletePlaylist,
   removeFromActivePlaylist,
+  renamePlaylist,
   reorderActivePlaylist,
   resetDefaultPlaylist,
   resolveActiveSources,
   sanitizeWorkspace,
+  setActivePlaylist,
   setWorkspaceLayout,
 } from '@/utils/workspace';
 
 const WORKSPACE_KEY = 'broadcasts:workspace';
-
 const catalog = catalogData.sources;
 
 function loadInitialWorkspace() {
@@ -42,6 +47,33 @@ export function useWorkspace() {
 
   const streams = useMemo(() => resolveActiveSources(workspace, catalog), [workspace]);
 
+  const playlists = useMemo(
+    () =>
+      workspace.playlists.map((playlist) => ({
+        id: playlist.id,
+        name: playlist.id === DEFAULT_PLAYLIST_ID ? catalogData.name : playlist.name,
+        sources: resolveActiveSources({ ...workspace, activePlaylistId: playlist.id }, catalog),
+      })),
+    [workspace]
+  );
+
+  const onPlaylistChange = useCallback((playlistId) => {
+    setWorkspace((prev) => setActivePlaylist(prev, playlistId));
+  }, []);
+
+  const onCreatePlaylist = useCallback((name, copyCurrent) => {
+    const id = `playlist-${window.crypto.randomUUID()}`;
+    setWorkspace((prev) => createPlaylist(prev, catalog, { id, name, copyCurrent }));
+  }, []);
+
+  const onRenamePlaylist = useCallback((name) => {
+    setWorkspace((prev) => renamePlaylist(prev, prev.activePlaylistId, name));
+  }, []);
+
+  const onDeletePlaylist = useCallback(() => {
+    setWorkspace((prev) => deletePlaylist(prev, prev.activePlaylistId));
+  }, []);
+
   const onLayoutChange = useCallback((layout) => {
     setWorkspace((prev) => setWorkspaceLayout(prev, layout));
   }, []);
@@ -59,6 +91,10 @@ export function useWorkspace() {
     setWorkspace((prev) => addCustomSource(prev, catalog, { videoId, label }));
   }, []);
 
+  const onAddSources = useCallback((sourceIds) => {
+    setWorkspace((prev) => addSourcesToActivePlaylist(prev, catalog, sourceIds));
+  }, []);
+
   const onRemoveStream = useCallback((sourceId) => {
     setWorkspace((prev) => removeFromActivePlaylist(prev, catalog, sourceId));
   }, []);
@@ -68,11 +104,18 @@ export function useWorkspace() {
   }, []);
 
   return {
+    playlists,
+    activePlaylistId: workspace.activePlaylistId,
+    onPlaylistChange,
+    onCreatePlaylist,
+    onRenamePlaylist,
+    onDeletePlaylist,
     layout: workspace.layout,
     onLayoutChange,
     streams,
     onReorderStreams,
     onAddStream,
+    onAddSources,
     onRemoveStream,
     onResetStreams,
   };
