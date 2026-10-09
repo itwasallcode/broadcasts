@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react';
 
 import { Menu } from '@/components/layout/Menu';
+import { SaveNotice } from '@/components/layout/SaveNotice';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { StreamGrid } from '@/components/streams/StreamGrid';
 
@@ -8,6 +9,8 @@ import { useWorkspace } from '@/hooks/useWorkspace';
 
 export default function App() {
   const {
+    saveFailed,
+    onRetrySave,
     playlists,
     activePlaylistId,
     onPlaylistChange,
@@ -51,7 +54,14 @@ export default function App() {
         onRefresh={handleRefresh}
         menuButtonRef={menuButtonRef}
       />
+      {saveFailed && !isMenuOpen && (
+        <div className="save-notice-floating">
+          <SaveNotice onRetry={onRetrySave} onSaved={() => menuButtonRef.current?.focus()} />
+        </div>
+      )}
       <Menu
+        saveFailed={saveFailed}
+        onRetrySave={onRetrySave}
         playlists={playlists}
         activePlaylistId={activePlaylistId}
         onPlaylistChange={onPlaylistChange}

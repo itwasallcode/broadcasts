@@ -962,3 +962,36 @@
   letter-spacing: 0.02em;
   margin-top: 3px;
 }
+
+.save-notice {
+  font-family: var(--font);
+  padding: 12px;
+  border: 1px solid rgba(255, 183, 77, 0.25);
+  border-radius: 8px;
+  background: #241f17;
+  color: #edc48a;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.save-notice strong {
+  font-weight: 500;
+}
+
+.save-notice p {
+  margin: 4px 0 8px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.save-notice button {
+  border-color: rgba(255, 183, 77, 0.25);
+  color: #edc48a;
+}
+
+.save-notice-floating {
+  position: fixed;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  right: 64px;
+  width: min(300px, calc(100vw - 80px));
+  z-index: 160;
+}
