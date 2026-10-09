@@ -3,12 +3,15 @@ import { useCallback, useEffect, useRef } from 'react';
 import { AppUpdate } from '@/components/layout/AppUpdate';
 import { LayoutButtons } from '@/components/layout/LayoutButtons';
 import { PlaylistPicker } from '@/components/layout/PlaylistPicker';
+import { SaveNotice } from '@/components/layout/SaveNotice';
 import { StreamList } from '@/components/streams/StreamList';
 import { GitHubIcon } from '@/components/ui/GitHubIcon';
 
 import { LAYOUT_OPTIONS } from '@/constants/layouts';
 
 export function Menu({
+  saveFailed,
+  onRetrySave,
   playlists,
   activePlaylistId,
   onPlaylistChange,
@@ -132,6 +135,12 @@ export function Menu({
         </section>
 
         <div className="menu-footer">
+          {saveFailed && isOpen && (
+            <SaveNotice
+              onRetry={onRetrySave}
+              onSaved={() => panelRef.current?.querySelector('select')?.focus()}
+            />
+          )}
           <a
             className="github-link"
             href="https://github.com/itwasallcode/broadcasts"

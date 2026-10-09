@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { MOBILE_VIEWPORT } from '@/constants/media';
 
@@ -40,13 +40,27 @@ function loadInitialWorkspace() {
 export function useWorkspace() {
   const [workspace, setWorkspace] = useState(loadInitialWorkspace);
 
-  useEffect(() => {
+  const [saveFailed, setSaveFailed] = useState(false);
+  const savedWorkspaceRef = useRef(null);
+
+  const onRetrySave = useCallback(() => {
+    if (savedWorkspaceRef.current === workspace) return true;
     try {
       window.localStorage.setItem(WORKSPACE_KEY, JSON.stringify(workspace));
+      savedWorkspaceRef.current = workspace;
+      setSaveFailed(false);
+      return true;
     } catch {
-      return;
+      setSaveFailed(true);
+      return false;
     }
   }, [workspace]);
+
+  useEffect(() => {
+    // Report the result of synchronizing with browser storage.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    onRetrySave();
+  }, [onRetrySave]);
 
   const streams = useMemo(() => resolveActiveSources(workspace, catalog), [workspace]);
 
@@ -137,6 +151,8 @@ export function useWorkspace() {
       } catch {
         return 'Could not save the imported playlist. Your current playlists have been kept.';
       }
+      savedWorkspaceRef.current = nextWorkspace;
+      setSaveFailed(false);
       setWorkspace(nextWorkspace);
       return '';
     },
@@ -144,6 +160,8 @@ export function useWorkspace() {
   );
 
   return {
+    saveFailed,
+    onRetrySave,
     playlists,
     activePlaylistId: workspace.activePlaylistId,
     onPlaylistChange,
