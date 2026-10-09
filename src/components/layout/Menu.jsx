@@ -4,6 +4,7 @@ import { AppUpdate } from '@/components/layout/AppUpdate';
 import { LayoutButtons } from '@/components/layout/LayoutButtons';
 import { PlaylistPicker } from '@/components/layout/PlaylistPicker';
 import { StreamList } from '@/components/streams/StreamList';
+import { GitHubIcon } from '@/components/ui/GitHubIcon';
 
 import { LAYOUT_OPTIONS } from '@/constants/layouts';
 
@@ -34,7 +35,9 @@ export function Menu({
     const panel = panelRef.current;
     const returnFocusTarget = returnFocusRef.current;
     const getControls = () =>
-      panel.querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled)');
+      panel.querySelectorAll(
+        'a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled)'
+      );
     (getControls()[0] ?? panel).focus();
 
     function handleKeyDown(event) {
@@ -121,7 +124,19 @@ export function Menu({
           />
         </section>
 
-        <AppUpdate />
+        <div className="menu-footer">
+          <a
+            className="github-link"
+            href="https://github.com/itwasallcode/broadcasts"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View Broadcasts on GitHub (opens in a new tab)"
+          >
+            <GitHubIcon />
+            <span>GitHub</span>
+          </a>
+          <AppUpdate />
+        </div>
       </div>
 
       {isOpen && <div className="menu-backdrop" onClick={onClose} />}
