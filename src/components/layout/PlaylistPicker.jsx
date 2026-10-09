@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { AddStreamForm } from '@/components/layout/AddStreamForm';
 import { BrowseStreamsForm } from '@/components/layout/BrowseStreamsForm';
+import { StreamForm } from '@/components/layout/StreamForm';
 import { SettingsIcon } from '@/components/ui/SettingsIcon';
 
 import { nextNumberedName } from '@/utils/nextNumberedName';
@@ -223,9 +223,9 @@ export function PlaylistPicker({
                 onCancel={closeEditor}
               />
             ) : mode === 'add' ? (
-              <AddStreamForm
+              <StreamForm
                 streams={streams}
-                onAddStream={(id, label) => {
+                onSave={(id, label) => {
                   onAddStream(id, label);
                   closeEditor();
                 }}

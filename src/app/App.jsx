@@ -19,6 +19,7 @@ export default function App() {
     streams,
     onReorderStreams,
     onAddStream,
+    onEditStream,
     onAddSources,
     onRemoveStream,
     onResetStreams,
@@ -60,6 +61,7 @@ export default function App() {
         streams={streams}
         onReorderStreams={onReorderStreams}
         onAddStream={onAddStream}
+        onEditStream={onEditStream}
         onAddSources={onAddSources}
         onRemoveStream={onRemoveStream}
         onResetStreams={onResetStreams}
