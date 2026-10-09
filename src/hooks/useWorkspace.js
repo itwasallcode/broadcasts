@@ -11,6 +11,8 @@ import {
   createDefaultWorkspace,
   createPlaylist,
   deletePlaylist,
+  editCustomSource,
+  getStreamEditError,
   removeFromActivePlaylist,
   renamePlaylist,
   reorderActivePlaylist,
@@ -91,6 +93,16 @@ export function useWorkspace() {
     setWorkspace((prev) => addCustomSource(prev, catalog, { videoId, label }));
   }, []);
 
+  const onEditStream = useCallback(
+    (sourceId, videoId, label) => {
+      const error = getStreamEditError(workspace, catalog, sourceId, videoId);
+      if (error) return error;
+      setWorkspace((prev) => editCustomSource(prev, catalog, sourceId, { videoId, label }));
+      return '';
+    },
+    [workspace]
+  );
+
   const onAddSources = useCallback((sourceIds) => {
     setWorkspace((prev) => addSourcesToActivePlaylist(prev, catalog, sourceIds));
   }, []);
@@ -115,6 +127,7 @@ export function useWorkspace() {
     streams,
     onReorderStreams,
     onAddStream,
+    onEditStream,
     onAddSources,
     onRemoveStream,
     onResetStreams,

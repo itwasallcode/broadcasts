@@ -23,7 +23,7 @@ export const StreamGrid = memo(function StreamGrid({
     <div className="stream-grid" style={gridStyle} inert={inert}>
       {visible.map((stream, i) => (
         <StreamCell
-          key={stream?.id ?? `empty:${i}`}
+          key={stream ? `${stream.id}:${stream.playback.videoId}` : `empty:${i}`}
           stream={stream}
           index={i}
           refreshKey={refreshKey}

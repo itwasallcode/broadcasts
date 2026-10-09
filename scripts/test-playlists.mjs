@@ -15,6 +15,8 @@ const server = await createServer({
 try {
   const {
     createPlaylist,
+    editCustomSource,
+    getStreamEditError,
     deletePlaylist,
     getPlaylistNameError,
     renamePlaylist,
@@ -146,6 +148,61 @@ try {
     );
     assert.deepEqual(ids(setActivePlaylist(removedFromOrigin, 'target')), ids(next));
     assert.equal(removedFromOrigin.customSources.length, 1);
+  });
+
+  await test('editing a shared personal stream preserves IDs, order and saved preferences', () => {
+    const before = createPlaylist(saved, catalog, { id: 'copy', name: 'Copy', copyCurrent: true });
+    const snapshot = structuredClone(before);
+    const next = editCustomSource(before, catalog, 'custom-dQw4w9WgXcQ', {
+      videoId: 'abcdefghijk',
+      label: 'Updated',
+    });
+    assert.deepEqual(before, snapshot);
+    assert.deepEqual(next.playlists, before.playlists);
+    assert.equal(next.layout, before.layout);
+    assert.equal(next.activePlaylistId, before.activePlaylistId);
+    for (const playlist of next.playlists) {
+      const source = resolveActiveSources(setActivePlaylist(next, playlist.id), catalog).find(
+        (source) => source.id === 'custom-dQw4w9WgXcQ'
+      );
+      assert.equal(source.label, 'Updated');
+      assert.equal(source.playback.videoId, 'abcdefghijk');
+    }
+    assert.deepEqual(sanitizeWorkspace(JSON.parse(JSON.stringify(next)), catalog), next);
+    const readded = addCustomSource(next, catalog, { videoId: 'dQw4w9WgXcQ', label: 'Original' });
+    assert.equal(readded.customSources.length, 2);
+    assert.notEqual(readded.customSources[0].id, readded.customSources[1].id);
+    assert.equal(readded.customSources[0].playback.videoId, 'abcdefghijk');
+    assert.equal(readded.customSources[1].playback.videoId, 'dQw4w9WgXcQ');
+    const empty = createPlaylist(readded, catalog, { id: 'empty', name: 'Empty' });
+    const reused = addCustomSource(empty, catalog, { videoId: 'abcdefghijk', label: 'Ignored' });
+    assert.deepEqual(ids(reused), ['custom-dQw4w9WgXcQ']);
+    assert.equal(reused.customSources.length, 2);
+  });
+
+  await test('editing rejects catalog changes, invalid videos and duplicates in other affected lists', () => {
+    const before = createPlaylist(saved, catalog, { id: 'copy', name: 'Copy', copyCurrent: true });
+    const other = addCustomSource(before, catalog, { videoId: 'abcdefghijk', label: 'Other' });
+    const active = setActivePlaylist(other, 'default');
+    for (const [sourceId, videoId] of [
+      ['cnn-turk', 'abcdefghijk'],
+      ['missing', 'abcdefghijk'],
+      ['custom-dQw4w9WgXcQ', 'bad'],
+      ['custom-dQw4w9WgXcQ', 'abcdefghijk'],
+      ['custom-dQw4w9WgXcQ', catalog.find((source) => source.id === 'cnn-turk').playback.videoId],
+    ]) {
+      assert.ok(getStreamEditError(active, catalog, sourceId, videoId));
+      assert.equal(
+        editCustomSource(active, catalog, sourceId, { videoId, label: 'Invalid' }),
+        active
+      );
+    }
+    const renamed = editCustomSource(active, catalog, 'custom-dQw4w9WgXcQ', {
+      videoId: 'dQw4w9WgXcQ',
+      label: 'Renamed',
+    });
+    assert.equal(renamed.customSources[0].label, 'Renamed');
+    assert.deepEqual(renamed.customSources[0].playback, saved.customSources[0].playback);
   });
 
   await test('browsing restores a hidden default stream without resetting preferences', () => {

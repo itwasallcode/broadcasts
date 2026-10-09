@@ -789,6 +789,38 @@
   flex: 1;
 }
 
+.stream-item-edit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: rgba(255, 255, 255, 0.35);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.stream-item-edit svg {
+  flex-shrink: 0;
+}
+
+.stream-item-edit:hover,
+.stream-item-edit:focus-visible {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.stream-edit-hint {
+  margin: 0 0 4px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 .stream-item-remove {
   margin-left: auto;
   background: none;

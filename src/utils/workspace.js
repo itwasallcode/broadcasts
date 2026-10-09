@@ -238,7 +238,17 @@ export function addSourcesToActivePlaylist(workspace, catalog, sourceIds) {
 }
 
 export function addCustomSource(workspace, catalog, { videoId, label }) {
-  const id = `${CUSTOM_ID_PREFIX}${videoId}`;
+  const existing = workspace.customSources.find((source) => source.playback.videoId === videoId);
+  const baseId = `${CUSTOM_ID_PREFIX}${videoId}`;
+  let id = existing?.id ?? baseId;
+  // Edited sources keep their IDs; their original video can be added again independently.
+  for (
+    let suffix = 2;
+    !existing && workspace.customSources.some((source) => source.id === id);
+    suffix++
+  ) {
+    id = `${baseId}-${suffix}`;
+  }
   const playlist = getActivePlaylist(workspace);
   let next = workspace;
   if (!next.customSources.some((source) => source.id === id)) {
@@ -253,6 +263,32 @@ export function addCustomSource(workspace, catalog, { videoId, label }) {
   const order = materializeOrder(playlist, catalog);
   if (order.includes(id)) return next;
   return updatePlaylist(next, playlist.id, { order: [...order, id] });
+}
+
+export function getStreamEditError(workspace, catalog, sourceId, videoId) {
+  if (!workspace.customSources.some((source) => source.id === sourceId))
+    return 'Only personal streams can be edited.';
+  if (!sanitizePlayback({ provider: 'youtube', kind: 'video', videoId }))
+    return 'Please enter a valid YouTube video ID or URL';
+  for (const playlist of workspace.playlists) {
+    if (!playlist.order.includes(sourceId)) continue;
+    const sources = resolveActiveSources({ ...workspace, activePlaylistId: playlist.id }, catalog);
+    if (sources.some((source) => source.id !== sourceId && source.playback.videoId === videoId))
+      return 'This stream is already in a playlist that uses it.';
+  }
+  return '';
+}
+
+export function editCustomSource(workspace, catalog, sourceId, { videoId, label }) {
+  if (getStreamEditError(workspace, catalog, sourceId, videoId)) return workspace;
+  return {
+    ...workspace,
+    customSources: workspace.customSources.map((source) =>
+      source.id === sourceId
+        ? { ...source, label, playback: { ...source.playback, videoId } }
+        : source
+    ),
+  };
 }
 
 export function removeFromActivePlaylist(workspace, catalog, sourceId) {

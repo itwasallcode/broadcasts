@@ -20,6 +20,7 @@ export function Menu({
   streams,
   onReorderStreams,
   onAddStream,
+  onEditStream,
   onAddSources,
   onRemoveStream,
   onResetStreams,
@@ -118,6 +119,8 @@ export function Menu({
           />
 
           <StreamList
+            playlists={playlists}
+            onEditStream={onEditStream}
             streams={streams}
             onReorderStreams={onReorderStreams}
             onRemoveStream={onRemoveStream}
