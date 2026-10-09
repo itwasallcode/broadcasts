@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { BrowseStreamsForm } from '@/components/layout/BrowseStreamsForm';
+import { ImportPlaylistForm } from '@/components/layout/ImportPlaylistForm';
 import { StreamForm } from '@/components/layout/StreamForm';
 import { SettingsIcon } from '@/components/ui/SettingsIcon';
 
@@ -19,6 +20,8 @@ export function PlaylistPicker({
   streams,
   onAddStream,
   onAddSources,
+  onExportPlaylist,
+  onImportPlaylist,
 }) {
   const [mode, setMode] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -183,6 +186,23 @@ export function PlaylistPicker({
                 Delete
               </button>
             )}
+            <hr className="transfer-divider" />
+            <button type="button" onClick={() => openEditor('import')}>
+              Import
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMenuOpen(false);
+                const exportError = onExportPlaylist();
+                if (exportError) {
+                  setMode('export-error');
+                  setError(exportError);
+                } else moreRef.current?.focus();
+              }}
+            >
+              Export
+            </button>
           </div>
         )}
       </div>
@@ -212,7 +232,21 @@ export function PlaylistPicker({
               closeEditor();
             }}
           >
-            {mode === 'browse' ? (
+            {mode === 'export-error' ? (
+              <div className="playlist-editor">
+                <h2 id="playlist-title">Export</h2>
+                <p className="playlist-error" role="alert">
+                  {error}
+                </p>
+                <div className="playlist-actions">
+                  <button type="button" className="playlist-action" onClick={closeEditor}>
+                    Close
+                  </button>
+                </div>
+              </div>
+            ) : mode === 'import' ? (
+              <ImportPlaylistForm onImport={onImportPlaylist} onClose={closeEditor} />
+            ) : mode === 'browse' ? (
               <BrowseStreamsForm
                 playlists={sourcePlaylists}
                 streams={streams}
