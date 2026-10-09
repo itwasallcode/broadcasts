@@ -4,6 +4,7 @@ import { MOBILE_VIEWPORT } from '@/constants/media';
 
 import catalogData from '@/data/turkish-streams.json';
 
+import { downloadPlaylistExport, importPlaylist } from '@/utils/playlistTransfer';
 import {
   DEFAULT_PLAYLIST_ID,
   addCustomSource,
@@ -115,6 +116,33 @@ export function useWorkspace() {
     setWorkspace((prev) => resetDefaultPlaylist(prev));
   }, []);
 
+  const onExportPlaylist = useCallback(() => {
+    try {
+      downloadPlaylistExport(workspace, catalog, catalogData.name);
+      return '';
+    } catch {
+      return 'Could not export this playlist. Try again.';
+    }
+  }, [workspace]);
+
+  const onImportPlaylist = useCallback(
+    (playlist) => {
+      const nextWorkspace = importPlaylist(workspace, catalog, playlist, {
+        id: `playlist-${window.crypto.randomUUID()}`,
+        defaultPlaylistName: catalogData.name,
+      });
+      try {
+        // Persist first so a failed import leaves the existing playlists intact.
+        window.localStorage.setItem(WORKSPACE_KEY, JSON.stringify(nextWorkspace));
+      } catch {
+        return 'Could not save the imported playlist. Your current playlists have been kept.';
+      }
+      setWorkspace(nextWorkspace);
+      return '';
+    },
+    [workspace]
+  );
+
   return {
     playlists,
     activePlaylistId: workspace.activePlaylistId,
@@ -131,5 +159,7 @@ export function useWorkspace() {
     onAddSources,
     onRemoveStream,
     onResetStreams,
+    onExportPlaylist,
+    onImportPlaylist,
   };
 }

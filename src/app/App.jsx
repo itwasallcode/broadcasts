@@ -23,6 +23,8 @@ export default function App() {
     onAddSources,
     onRemoveStream,
     onResetStreams,
+    onExportPlaylist,
+    onImportPlaylist,
   } = useWorkspace();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -65,6 +67,8 @@ export default function App() {
         onAddSources={onAddSources}
         onRemoveStream={onRemoveStream}
         onResetStreams={onResetStreams}
+        onExportPlaylist={onExportPlaylist}
+        onImportPlaylist={onImportPlaylist}
         isOpen={isMenuOpen}
         onClose={closeMenu}
         returnFocusRef={menuButtonRef}

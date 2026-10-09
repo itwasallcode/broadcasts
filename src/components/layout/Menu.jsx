@@ -24,6 +24,8 @@ export function Menu({
   onAddSources,
   onRemoveStream,
   onResetStreams,
+  onExportPlaylist,
+  onImportPlaylist,
   isOpen,
   onClose,
   returnFocusRef,
@@ -113,6 +115,8 @@ export function Menu({
             onRename={onRenamePlaylist}
             onDelete={onDeletePlaylist}
             onReset={handleReset}
+            onExportPlaylist={onExportPlaylist}
+            onImportPlaylist={onImportPlaylist}
             streams={streams}
             onAddStream={onAddStream}
             onAddSources={onAddSources}
