@@ -484,6 +484,14 @@
   outline-offset: 0;
 }
 
+@media (any-pointer: coarse) {
+  /* Avoid iOS focus zoom in forms and when returning focus to the playlist select. */
+  .playlist-name-input,
+  .playlist-select {
+    font-size: 16px;
+  }
+}
+
 .playlist-error {
   color: #ff6b6b;
   font-size: 12px;
