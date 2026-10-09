@@ -68,7 +68,7 @@ for (const base of ['/', '/broadcasts/']) {
       await button.click();
       await expect(page.locator('meta[name="test-build"]')).toHaveAttribute('content', 'b');
       await expect(page.locator('iframe')).toHaveCount(3);
-      await expect(page.locator('iframe').first()).toHaveAttribute('src', /abcdefghijk/);
+      await expect(page.locator('iframe[title="CNN Türk"]')).toHaveAttribute('src', /abcdefghijk/);
       expect(
         await page.evaluate(() => JSON.parse(localStorage.getItem('broadcasts:workspace')))
       ).toEqual(WORKSPACE);

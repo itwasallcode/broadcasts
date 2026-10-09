@@ -41,7 +41,7 @@ export const StreamCell = memo(function StreamCell({ stream, index, refreshKey =
 
   if (!stream) {
     return (
-      <div className="stream-cell stream-cell-empty">
+      <div className="stream-cell stream-cell-empty" style={{ order: index }}>
         <div className="stream-empty-content">
           <div className="stream-empty-icon">＋</div>
           <div className="stream-empty-main">Empty</div>
@@ -54,7 +54,7 @@ export const StreamCell = memo(function StreamCell({ stream, index, refreshKey =
   const src = buildEmbedUrl(stream.playback);
 
   return (
-    <div className="stream-cell">
+    <div className="stream-cell" style={{ order: index }}>
       {status === 'loading' && (
         <div className="stream-loading">
           <div className="stream-spinner" />

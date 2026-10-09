@@ -60,6 +60,7 @@
   display: grid;
   grid-template-columns: repeat(var(--cols), 1fr);
   grid-template-rows: repeat(var(--rows), 1fr);
+  reading-flow: grid-order;
   gap: 2px;
   background: #111;
 }
