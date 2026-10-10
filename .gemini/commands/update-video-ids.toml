@@ -1,0 +1,4 @@
+description = "Update the video ID of an unavailable default stream using <stream> <video-id | youtube-url>"
+prompt = """
+Use `.agents/skills/update-video-ids/SKILL.md` for: {{args}}
+"""

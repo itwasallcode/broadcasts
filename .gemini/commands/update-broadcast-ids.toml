@@ -1,6 +1,0 @@
-description = "Fix a broken default broadcast id using <channel> <video-id | youtube-url>"
-prompt = """
-Use `.agents/skills/update-broadcast-ids/SKILL.md` for: {{args}}
-
-Accept either a bare 11-character video id or a full YouTube URL without asking for the other form.
-"""

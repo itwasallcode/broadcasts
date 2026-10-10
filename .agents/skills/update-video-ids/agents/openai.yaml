@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Update Video IDs'
+  short_description: 'Update video IDs for default streams'
+  default_prompt: 'Use $update-video-ids to fix an unavailable default stream using its name and either a replacement video ID or a full YouTube URL.'
