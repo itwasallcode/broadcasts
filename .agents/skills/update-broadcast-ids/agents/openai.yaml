@@ -1,4 +1,0 @@
-interface:
-  display_name: 'Update Broadcast IDs'
-  short_description: 'Fix a broken default broadcast id'
-  default_prompt: 'Use $update-broadcast-ids to fix a dead default broadcast id by providing the channel and either a bare video id or a full YouTube URL.'
